@@ -137,10 +137,10 @@ class SearchForm extends Component {
                     <Random id={"random-search"}
                         label={"Random"}
                         onClick={
-                            (e) => { this.random(e) }}/>
+                            (e) => { this.random(e) }} />
                     <Search onClick={
                         (e) => { this.search(e, this.state.term) }}
-                        type={"submit"}  />
+                        type={"submit"} />
                 </Form>
             </Container>
         );

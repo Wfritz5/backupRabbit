@@ -82,7 +82,7 @@ class Home extends Component {
         API.addUrl(this.state.userId, req);
     }
 
-    scrapeResource = (url) => {
+    scrapeResource = (url, linkLength) => {
         console.log("TEST@!#$@$%$#%@#$")
         API.scrape().then((url, this.state.linkLength, (result) => {
             let links = [];

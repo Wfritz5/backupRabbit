@@ -40,12 +40,12 @@ router.get("/scrape", async function (req, res) {
 
     // url = "https://en.wikipedia.org/wiki/Special:Random?origin=*";
     console.log("RUNNING %%$#@$&$*#$!@#(!@#!@#(!@#");
-    await axios.get(`https://wikipedia.org/wiki/Snoopp?origin=*`, {
+    await axios.get(`https://wikipedia.org/wiki/cookies?origin=*`, {
         validateStatus: function (status) {
             return status < 500; // Reject only if the status code is greater than or equal to 500
         }
     }).then(response => {
-        console.log('Getting Responses From Wikipedia.com/Snoopp------------------------------')
+        console.log('Info about Cookies below------------------------------')
         // console.log(response);
         const result = {};
         const linkArr = [];
@@ -67,7 +67,7 @@ router.get("/scrape", async function (req, res) {
             if (filteredLinks.length < 5) {
                 result.randomLinks = randomLinkGenerator(filteredLinks, filteredLinks.length);
             } else {
-                result.randomLinks = randomLinkGenerator(filteredLinks, linkCount);
+                result.randomLinks = randomLinkGenerator(filteredLinks); //removed linkCount from rLG function params
             }
             // checks for a good image and then will grab its base code
 
@@ -80,6 +80,8 @@ router.get("/scrape", async function (req, res) {
                         console.log(result);
                         res.json(result);
                     });
+                }).catch(err => {
+                    console.log(err);
                 })
             } else {
                 result.image = noImage;
