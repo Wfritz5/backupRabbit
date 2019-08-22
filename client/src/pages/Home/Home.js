@@ -9,9 +9,9 @@ import SearchForm from "../../components/SearchForm.js";
 import SlideNav from "../../components/SlideNav";
 import Canvas from "../../components/three/canvas.js";
 import Map from "../../components/Map.js";
-import scrape from "../../utils/scrape";
+// import scrape from "../../utils/scrape";
 import styled from "styled-components";
-const axios = require("axios");
+// const axios = require("axios");
 
 const Container = styled.div`
 position:relative;
@@ -84,29 +84,28 @@ class Home extends Component {
 
     scrapeResource = (url) => {
         console.log("TEST@!#$@$%$#%@#$")
-        axios.get("/api/scrape/scraper").then(
-            scrape(url, this.state.linkLength, (result) => {
-                let links = [];
-                let linkTitles = [];
-                for (let i = 0; i < this.state.linkLength; i++) {
-                    links.push(result.randomLinks[i]);
-                    if (result.randomLinks[i]) {
-                        linkTitles.push(result.randomLinks[i].slice(19).replace(/_/gi, " "));
-                    }
+        API.scrape().then((url, this.state.linkLength, (result) => {
+            let links = [];
+            let linkTitles = [];
+            for (var i = 0; i < this.state.linkLength; i++) {
+                links.push(result.randomLinks[i]);
+                if (result.randomLinks[i]) {
+                    linkTitles.push(result.randomLinks[i].slice(19).replace(/_/gi, " "));
                 }
-                this.setState({
-                    href: result.url,
-                    linkTitles: linkTitles,
-                    links: links,
-                    image: result.image,
-                    article: result.summary,
-                    title: result.title,
-                    rabbitHole: [...this.state.rabbitHole, this.state]
-                })
-                console.log(this.state);
-            })).catch(err => {
-                console.log(err);
-            });
+            }
+            this.setState({
+                href: result.url,
+                linkTitles: linkTitles,
+                links: links,
+                image: result.image,
+                article: result.summary,
+                title: result.title,
+                rabbitHole: [...this.state.rabbitHole, this.state]
+            })
+            console.log(this.state);
+        })).catch(err => {
+            console.log(err);
+        });
     }
 
 
@@ -115,9 +114,9 @@ class Home extends Component {
 
     render() {
         return (
-            <Container className="homeBox" >
+            <Container className="homeBox">
                 <SearchForm scrape={this.scrapeResource} />
-                <SlideNav state={this.state} addFavorite={this.addFavorite}></SlideNav>
+                <SlideNav state={this.state} addFavorite={this.addFavorite} />
                 <Canvas state={this.state} scrape={this.scrapeResource} />
                 <Map store={this.state.rabbitHole} update={this.updateState} />
             </Container>

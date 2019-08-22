@@ -36,16 +36,16 @@ function randomLinkGenerator(links, num) {
     });
 }); */
 
-router.get("/scraper", async function (req, res) {
+router.get("/scrape", async function (req, res) {
 
     // url = "https://en.wikipedia.org/wiki/Special:Random?origin=*";
     console.log("RUNNING %%$#@$&$*#$!@#(!@#!@#(!@#");
-    await axios.get(`https://wikipedia.org/wiki/snoopp`, {
+    await axios.get(`https://wikipedia.org/wiki/Snoopp?origin=*`, {
         validateStatus: function (status) {
             return status < 500; // Reject only if the status code is greater than or equal to 500
         }
     }).then(response => {
-        console.log('Getting Responses From Wikipedia.com/Snoopp---------------------------------------------------------')
+        console.log('Getting Responses From Wikipedia.com/Snoopp------------------------------')
         // console.log(response);
         const result = {};
         const linkArr = [];
@@ -78,13 +78,13 @@ router.get("/scraper", async function (req, res) {
                     $(".fullImageLink").each(function (i, element) {
                         result.image = $(this).children("a").attr("href")
                         console.log(result);
-                        cb(result);
+                        res.json(result);
                     });
                 })
             } else {
                 result.image = noImage;
                 console.log(result);
-                cb(result);
+                res.json(result);
             }
         });
     }).catch(err => {
