@@ -40,12 +40,13 @@ router.get("/scrape", async function (req, res) {
 
     // url = "https://en.wikipedia.org/wiki/Special:Random?origin=*";
     console.log("RUNNING %%$#@$&$*#$!@#(!@#!@#(!@#");
-    await axios.get(`https://wikipedia.org/wiki/cookies?origin=*`, {
+    axios.get(url, {
         validateStatus: function (status) {
-            return status < 500; // Reject only if the status code is greater than or equal to 500
+            return status < 500;
         }
     }).then(response => {
-        console.log('Info about Cookies below------------------------------')
+
+        // Reject only if the status code is greater than or equal to 500
         // console.log(response);
         const result = {};
         const linkArr = [];
@@ -90,9 +91,7 @@ router.get("/scrape", async function (req, res) {
             }
         });
     }).catch(err => {
-        console.log('ALL CATCH BELOW---------------------------------')
         console.log(err);
-        console.log("ALL CATCH ABOVE---------------------------------")
     })
 
 });

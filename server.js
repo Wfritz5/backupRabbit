@@ -13,7 +13,7 @@ const flash = require('connect-flash');
 app.use(bodyParser.json());
 
 app.use(cors({
-  origin: 'http://localhost',
+  origin: '*',
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.options('*', cors());

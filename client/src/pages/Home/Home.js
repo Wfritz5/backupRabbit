@@ -84,7 +84,7 @@ class Home extends Component {
 
     scrapeResource = (url, linkLength) => {
         console.log("TEST@!#$@$%$#%@#$")
-        API.scrape().then((url, this.state.linkLength, (result) => {
+        API.scrape(url, linkLength).then((result => {
             let links = [];
             let linkTitles = [];
             for (var i = 0; i < this.state.linkLength; i++) {
