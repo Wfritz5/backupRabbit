@@ -12,26 +12,36 @@ const logger = require("morgan");
 const flash = require('connect-flash');
 app.use(bodyParser.json());
 
-app.use(cors({
-  origin: '*',
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
-app.options('*', cors());
+var corsOptions = {
+  origin: 'http://wikipedia.org',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
+app.get('/scrape', function (req, res, next) {
+  res.json({
+    msg: 'This is CORS-enabled for all origins!'
+  })
+})
+
+// app.use(cors({
+//   headers: {
+//     'Accept': 'application/json',
+//     'Content-Type': 'application/json',
+//     'Access-Control-Allow-Origin': 'https://wikirabbithole.herokuapp.com/',
+//     'Access-Control-Allow-Methods': 'GET, POST'
+//   }
+// }));
 // app.options('*', cors());
-app.all(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', "http://localhost");
-    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    next();
-  }),
-  app.use('/scrape', require("./routes/api/scrape"));
-// headers: {
-//   'Accept': 'application/json',
-//   'Content-Type': 'application/json',
-//   'Access-Control-Allow-Origin': 'https://wikirabbithole.herokuapp.com/',
-//   'Access-Control-Allow-Methods': 'GET, POST'
-// }
+
+// // app.options('*', cors());
+// app.all(function (req, res, next) {
+//     res.header('Access-Control-Allow-Origin', "http://localhost");
+//     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+//     res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//     next();
+//   app.use('/scrape', require("./routes/api/scrape"));
+//   }),
+
 
 
 app.use(express.urlencoded({

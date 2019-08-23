@@ -43,6 +43,13 @@ router.get("/scrape", async function (req, res) {
     axios.get(url, {
         validateStatus: function (status) {
             return status < 500;
+        },
+        headers: {
+            'Access-Control-Allow-Origin': "*",
+            // 'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
+            // 'Access-Control-Allow-Headers': "*",
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json'
         }
     }).then(response => {
 
@@ -56,7 +63,7 @@ router.get("/scrape", async function (req, res) {
             result.summary = `${$(this).find("p").text().slice(0,300).replace(/ *\[[^\]]*]/, '')}...`;
             result.image = $(this).find(".image").attr("href");
             const links = $(this).find("a");
-            result.url = `https://wikipedia.org/wiki/${result.title.replace(/ /g, "_")}?origin=*`;
+            result.url = `https://cors-anywhere.herokuapp.com/https://wikipedia.org/wiki/${result.title.replace(/ /g, "_")}?origin=*`;
             // push all links into an array
             $(links).each(function (i, link) {
                 linkArr.push(`${$(link).attr('href')}`)
@@ -73,7 +80,7 @@ router.get("/scrape", async function (req, res) {
             // checks for a good image and then will grab its base code
 
             if (result.image) {
-                result.image = `https://wikipedia.org${result.image}`;
+                result.image = `https://cors-anywhere.herokuapp.com/https://wikipedia.org${result.image}`;
                 axios.get(result.image).then(function (response) {
                     const $ = cheerio.load(response.data);
                     $(".fullImageLink").each(function (i, element) {
@@ -83,6 +90,7 @@ router.get("/scrape", async function (req, res) {
                     });
                 }).catch(err => {
                     console.log(err);
+                    console.log(result);
                 })
             } else {
                 result.image = noImage;

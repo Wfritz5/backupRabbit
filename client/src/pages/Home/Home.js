@@ -31,7 +31,7 @@ class Home extends Component {
             image: "",
             article: "",
             title: "",
-            linkLength: 5,
+            linkLength: 0,
             username: null,
             favorites: [],
             userId: null,
@@ -70,6 +70,13 @@ class Home extends Component {
         this.setState(this.state.rabbitHole[stateIndex]);
     }
 
+    updateLinkLength = (e) => {
+        let val = e.target.value;
+        this.setState({
+            linkLength: val,
+        })
+    }
+
     addFavorite = () => {
         let req = {
             title: this.state.title,
@@ -79,31 +86,44 @@ class Home extends Component {
             userId: this.state.userId,
             keywords: this.state.tags
         };
-        API.addUrl(this.state.userId, req);
+        API.addUrl(this.state.userId, req).then(result => {
+            let newFav = JSON.parse(result.config.data);
+            this.setState({
+                favorites: [...this.state.favorites, newFav]
+            })
+        });
     }
 
     scrapeResource = (url, linkLength) => {
-        console.log("TEST@!#$@$%$#%@#$")
-        API.scrape(url, linkLength).then((result => {
+        console.log('test!@#!@#!@#!@#!@#!@#');
+        API.scrape(url, (result) => {
             let links = [];
             let linkTitles = [];
-            for (var i = 0; i < this.state.linkLength; i++) {
-                links.push(result.randomLinks[i]);
+            let shown = 0.5;
+            if (this.state.links.length) {
+                let prevCount = this.state.linkLength;
+                let prevLength = this.state.links.length;
+                shown = prevCount / prevLength;
+            }
+            for (let i = 0; i < 20; i++) {
                 if (result.randomLinks[i]) {
+                    links.push(result.randomLinks[i]);
                     linkTitles.push(result.randomLinks[i].slice(19).replace(/_/gi, " "));
                 }
-            }
+            };
+
             this.setState({
                 href: result.url,
                 linkTitles: linkTitles,
                 links: links,
+                linkLength: result.randomLinks.length * shown,
                 image: result.image,
                 article: result.summary,
                 title: result.title,
                 rabbitHole: [...this.state.rabbitHole, this.state]
             })
             console.log(this.state);
-        })).catch(err => {
+        }).catch(err => {
             console.log(err);
         });
     }
@@ -114,7 +134,7 @@ class Home extends Component {
 
     render() {
         return (
-            <Container className="homeBox">
+            <Container className="homeBox" >
                 <SearchForm scrape={this.scrapeResource} />
                 <SlideNav state={this.state} addFavorite={this.addFavorite} />
                 <Canvas state={this.state} scrape={this.scrapeResource} />
