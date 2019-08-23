@@ -11,7 +11,7 @@ import Canvas from "../../components/three/canvas.js";
 import Map from "../../components/Map.js";
 // import scrape from "../../utils/scrape";
 import styled from "styled-components";
-// const axios = require("axios");
+const axios = require("axios");
 
 const Container = styled.div`
 position:relative;
@@ -94,29 +94,21 @@ class Home extends Component {
         });
     }
 
-    scrapeResource = (url, linkLength) => {
-        console.log('test!@#!@#!@#!@#!@#!@#');
-        API.scrape(url, (result) => {
+    scrapeResource = (url) => {
+        console.log("TEST@!#$@$%$#%@#$")
+        API.scrape(url, this.state.linkLength, (result) => {
             let links = [];
             let linkTitles = [];
-            let shown = 0.5;
-            if (this.state.links.length) {
-                let prevCount = this.state.linkLength;
-                let prevLength = this.state.links.length;
-                shown = prevCount / prevLength;
-            }
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < this.state.linkLength; i++) {
+                links.push(result.randomLinks[i]);
                 if (result.randomLinks[i]) {
-                    links.push(result.randomLinks[i]);
                     linkTitles.push(result.randomLinks[i].slice(19).replace(/_/gi, " "));
                 }
-            };
-
+            }
             this.setState({
                 href: result.url,
                 linkTitles: linkTitles,
                 links: links,
-                linkLength: result.randomLinks.length * shown,
                 image: result.image,
                 article: result.summary,
                 title: result.title,
@@ -127,7 +119,6 @@ class Home extends Component {
             console.log(err);
         });
     }
-
 
 
     // viewSavedArticles = () => {}

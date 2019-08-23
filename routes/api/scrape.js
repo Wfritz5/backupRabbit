@@ -55,7 +55,7 @@ router.get("/scrape", async function (req, res) {
 
         // Reject only if the status code is greater than or equal to 500
         // console.log(response);
-        const result = {};
+        const result = encodeURI({});
         const linkArr = [];
         const $ = cheerio.load(response.data);
         $(".mw-body").each(function (i, element) {
@@ -63,7 +63,7 @@ router.get("/scrape", async function (req, res) {
             result.summary = `${$(this).find("p").text().slice(0,300).replace(/ *\[[^\]]*]/, '')}...`;
             result.image = $(this).find(".image").attr("href");
             const links = $(this).find("a");
-            result.url = `https://cors-anywhere.herokuapp.com/https://wikipedia.org/wiki/${result.title.replace(/ /g, "_")}?origin=*`;
+            result.url = `https://cors-anywhere.herokuapp.com/https://wikipedia.org/wiki/${result.title.replace(/ /g, "_")}`;
             // push all links into an array
             $(links).each(function (i, link) {
                 linkArr.push(`${$(link).attr('href')}`)
