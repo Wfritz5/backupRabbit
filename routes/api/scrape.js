@@ -36,7 +36,7 @@ function randomLinkGenerator(links, num) {
     });
 }); */
 
-router.get("/scrape", async function (req, res) {
+router.route("/scrape", async function (req, res) {
 
     // url = "https://en.wikipedia.org/wiki/Special:Random?origin=*";
     console.log("RUNNING %%$#@$&$*#$!@#(!@#!@#(!@#");
@@ -55,7 +55,7 @@ router.get("/scrape", async function (req, res) {
 
         // Reject only if the status code is greater than or equal to 500
         // console.log(response);
-        const result = encodeURI({});
+        const result = {};
         const linkArr = [];
         const $ = cheerio.load(response.data);
         $(".mw-body").each(function (i, element) {

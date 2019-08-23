@@ -96,28 +96,29 @@ class Home extends Component {
 
     scrapeResource = (url) => {
         console.log("TEST@!#$@$%$#%@#$")
-        API.scrape(url, this.state.linkLength, (result) => {
-            let links = [];
-            let linkTitles = [];
-            for (let i = 0; i < this.state.linkLength; i++) {
-                links.push(result.randomLinks[i]);
-                if (result.randomLinks[i]) {
-                    linkTitles.push(result.randomLinks[i].slice(19).replace(/_/gi, " "));
+        axios.get("/api/scrape/scraper").then(
+            API.scrape(url, this.state.linkLength, (result) => {
+                let links = [];
+                let linkTitles = [];
+                for (let i = 0; i < this.state.linkLength; i++) {
+                    links.push(result.randomLinks[i]);
+                    if (result.randomLinks[i]) {
+                        linkTitles.push(result.randomLinks[i].slice(19).replace(/_/gi, " "));
+                    }
                 }
-            }
-            this.setState({
-                href: result.url,
-                linkTitles: linkTitles,
-                links: links,
-                image: result.image,
-                article: result.summary,
-                title: result.title,
-                rabbitHole: [...this.state.rabbitHole, this.state]
-            })
-            console.log(this.state);
-        }).catch(err => {
-            console.log(err);
-        });
+                this.setState({
+                    href: result.url,
+                    linkTitles: linkTitles,
+                    links: links,
+                    image: result.image,
+                    article: result.summary,
+                    title: result.title,
+                    rabbitHole: [...this.state.rabbitHole, this.state]
+                })
+                console.log(this.state);
+            })).catch(err => {
+                console.log(err);
+            });
     }
 
 
