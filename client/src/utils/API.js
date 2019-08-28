@@ -25,8 +25,8 @@ export default {
     // scrape: function (url, linkCount) {
     //     return axios.get(`/api/scrape/${url}/${linkCount}`);
     // },
-    scrape: function (url, linkLength) {
-        return axios.get(`/api/scrape/scrape/${url}/${linkLength}`);
+    scrape: function (req) {
+        return axios.post(`/api/scrape/scrape/`, req);
     },
 
     addUrl: function (userId, req) {
